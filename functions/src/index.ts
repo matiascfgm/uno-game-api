@@ -207,16 +207,24 @@ function generateDeck() {
       deck.push(newCard);
     }
   }
-  return mixDeck(deck);
+  const notSpecialCard = false;
+  while (!notSpecialCard) {
+    const mixedDeck = mixDeck(deck);
+    if (mixedDeck[0].value !== (10 || 11 || 12 || 13 || 14)) {
+      return mixedDeck;
+    }
+  }
 }
 
 function mixDeck(deck: Card[]) {
-  for (const {} of deck) {
+  let n = 0;
+  while (n < 300) {
     const randomIndex = Math.floor(Math.random() * deck.length);
     const randomIndex2 = Math.floor(Math.random() * deck.length);
     const saveTempCard: Card = deck[randomIndex];
     deck[randomIndex] = deck[randomIndex2];
     deck[randomIndex2] = saveTempCard;
+    n++;
   }
   return deck;
 }
