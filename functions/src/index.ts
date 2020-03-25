@@ -15,10 +15,27 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
+
 export const helloWorld = functions.https.onRequest((request, response) => {
   response.json("Hello from the other side! matias kupfer");
 });
 
+export const removeFinishedGame = functions.firestore
+  .document("games/{gameId}")
+  .onUpdate((change, context) => {
+    setTimeout(
+      function deleteGame() {
+        // @ts-ignore
+        if (change.after.data().gameFinished) {
+          // @ts-ignore
+          db.collection('games').doc(change.after.data().gameId).delete().then((f) => {
+            console.log('removed')
+          }).catch(e => {
+            console.log(e)
+          })
+        }
+      }, 5000)
+  });
 
 // Express
 const app = express();
@@ -73,14 +90,13 @@ app.post('/create-game/:gameId/:gamePassword/:player', async (req, res) => {
         message: 'game ' + gameId + ' alredy exists, try another name'
       })
     }
-  })
+  });
 });
 
 app.post('/join-game/:gameId/:gamePassword/:player', async (req, res) => {
   const gameId = req.params.gameId;
   const gamePassword = req.params.gamePassword;
   const player = req.params.player;
-
   await checkGameExists(gameId).get().then(docSnapshot => {
     // @ts-ignore
     if (docSnapshot && docSnapshot._fieldsProto.password.stringValue === gamePassword &&
