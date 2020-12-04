@@ -1,6 +1,6 @@
 # uno-game-api
 Api for the [UNO-GAME](https://github.com/matiascfgm/uno-game) repository. Made with nodejs and express.
 
-You can play it here ---> [PLAY UNO](https://matiascfgm.github.io/uno-game)
+You can play it here ---> [PLAY UNO](http://projects.matiaskupfer.com/uno-game)
 
 author: Matias Kupfer
